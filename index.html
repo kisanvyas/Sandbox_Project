@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+</head>
+<body>
+    <h1>House Price Prediction</h1>
+    <form id="prediction-form">
+        <!-- Add input fields for each feature of the model -->
+        <label for="MedInc">MedInc:</label>
+        <input type="text" id="MedInc" name="MedInc"><br><br>
+        <label for="HouseAge">HouseAge:</label>
+        <input type="text" id="HouseAge" name="HouseAge"><br><br>
+        <label for="AveRooms">AveRooms:</label>
+        <input type="text" id="AveRooms" name="AveRooms"><br><br>
+        <label for="AveBedrms">AveBedrms:</label>
+        <input type="text" id="AveBedrms" name="AveBedrms"><br><br>
+        <label for="Population">Population:</label>
+        <input type="text" id="Population" name="Population"><br><br>
+        <label for="AveOccup">AveOccup:</label>
+        <input type="text" id="AveOccup" name="AveOccup"><br><br>
+        <label for="Latitude">Latitude:</label>
+        <input type="text" id="Latitude" name="Latitude"><br><br>
+        <label for="Longitude">Longitude:</label>
+        <input type="text" id="Longitude" name="Longitude"><br><br>
+        <button type="button" onclick="makePrediction()">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        function makePrediction() {
+            let features = {};
+            // Assuming the California housing dataset features
+            features['MedInc'] = parseFloat(document.getElementById('MedInc').value);
+            features['HouseAge'] = parseFloat(document.getElementById('HouseAge').value);
+            features['AveRooms'] = parseFloat(document.getElementById('AveRooms').value);
+            features['AveBedrms'] = parseFloat(document.getElementById('AveBedrms').value);
+            features['Population'] = parseFloat(document.getElementById('Population').value);
+            features['AveOccup'] = parseFloat(document.getElementById('AveOccup').value);
+            features['Latitude'] = parseFloat(document.getElementById('Latitude').value);
+            features['Longitude'] = parseFloat(document.getElementById('Longitude').value);
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ features: features })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Price: ' + data.prediction;
+            });
+        }
+    </script>
+</body>
+</html>
